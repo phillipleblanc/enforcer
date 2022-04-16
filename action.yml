@@ -1,0 +1,9 @@
+name: 'Enforcer'
+author: 'Phillip LeBlanc'
+description: "A GitHub Action's based bot that enforces repo rules are followed"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'cpu'
+  color: 'purple'
