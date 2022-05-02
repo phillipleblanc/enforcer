@@ -1,10 +1,10 @@
 package rules
 
-type Rules interface {
+type RuleProcessor interface {
 	Name() string
 }
 
-func GetRule(name string) Rules {
+func GetRuleProcessor(name string) RuleProcessor {
 	switch name {
 	case "github.com/spicehq/labels":
 		return &spicehqLabels{}

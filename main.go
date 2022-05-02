@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v43/github"
-	"golang.org/x/oauth2"
+	hub "github.com/google/go-github/v43/github"
+	"github.com/phillipleblanc/enforcer/pkg/github"
 )
 
 type Inputs struct {
@@ -21,15 +21,13 @@ type Inputs struct {
 func main() {
 	inputs := getInputs()
 
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: inputs.Token},
-	)
-	tc := oauth2.NewClient(ctx, ts)
+	gh := github.NewGitHub(inputs.Token)
+	err := gh.Init()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-	ghClient := github.NewClient(tc)
-
-	issues, _, err := ghClient.Issues.ListByRepo(context.Background(), inputs.Owner, inputs.Repo, &github.IssueListByRepoOptions{State: "open"})
+	issues, _, err := gh.Client().Issues.ListByRepo(context.Background(), inputs.Owner, inputs.Repo, &hub.IssueListByRepoOptions{State: "open"})
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
